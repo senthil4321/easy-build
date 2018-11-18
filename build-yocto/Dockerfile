@@ -42,6 +42,7 @@ USER build
 WORKDIR /home/build
 
 
-ENTRYPOINT ["bash","init.sh"]
-#CMD "/bin/bash"
+#ENTRYPOINT ["bash","init.sh"]
+ENTRYPOINT ["/bin/bash", "-l", "-c"]
+CMD "./init.sh"
 # EOF
