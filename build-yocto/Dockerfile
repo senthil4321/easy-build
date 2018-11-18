@@ -29,16 +29,19 @@ RUN echo "build ALL=(ALL) NOPASSWD: ALL" | tee -a /etc/sudoers
 # See https://wiki.yoctoproject.org/wiki/TipsAndTricks/ResolvingLocaleIssues
 RUN apt-get install -y locales
 RUN sed -i -e 's/# en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/' /etc/locale.gen && \
-        echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
-        dpkg-reconfigure --frontend=noninteractive locales && \
-        update-locale LANG=en_US.UTF-8
+     echo 'LANG="en_US.UTF-8"'>/etc/default/locale && \
+     dpkg-reconfigure --frontend=noninteractive locales && \
+     update-locale LANG=en_US.UTF-8
 
 ENV LC_ALL en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LANGUAGE en_US.UTF-8
-
+COPY ./init.sh /home/build/
+RUN ["chmod", "+x", "/home/build/init.sh"]
 USER build
 WORKDIR /home/build
-CMD "/bin/bash"
 
+
+ENTRYPOINT ["bash","init.sh"]
+#CMD "/bin/bash"
 # EOF
